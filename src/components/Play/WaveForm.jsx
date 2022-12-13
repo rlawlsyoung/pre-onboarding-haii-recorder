@@ -1,12 +1,15 @@
-import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { selectedRecordAtom } from '../../atom';
 import WaveSurfer from 'wavesurfer.js';
+import styled from 'styled-components';
 
 import { mainColor } from '../../theme';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { BsFillPauseFill } from 'react-icons/bs';
 
-const WaveForm = ({ selectedRecord }) => {
+const WaveForm = () => {
+  const selectedRecord = useRecoilValue(selectedRecordAtom);
   const [play, setPlay] = useState(true);
 
   const waveformRef = useRef();

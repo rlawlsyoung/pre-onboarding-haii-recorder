@@ -1,9 +1,12 @@
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { selectedRecordAtom } from '../atom';
 import styled from 'styled-components';
 import Empty from '../components/Play/Empty';
 import WaveForm from '../components/Play/WaveForm';
 
-const Play = ({ selectedRecord }) => {
+const Play = () => {
+  const selectedRecord = useRecoilValue(selectedRecordAtom);
   const params = useParams();
 
   return (
