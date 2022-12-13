@@ -30,7 +30,7 @@ https://www.notion.so/aae6c129b9c448c0a0ded1c5fb783437?p=5ab94e6c8ddc4cf98493fe2
 - **구현한 기능 :** 녹음 및 파이어베이스 Storage에 녹음본 저장
   - **녹음 :** 녹음 기능 및 타이머(녹음 가능 최대 시간), 또 녹음한 시간을 표시하는 기능을 구현했습니다.
   - **파이어베이스 업로드 :** 녹음이 끝나면 자동으로 파이어베이스 Storage에 업로드 되도록 구현했습니다.
-  - **자세한건 [블로그 게시글](https://velog.io/@jinyoung985/Pre-Onboarding-%EC%98%A4%EB%94%94%EC%98%A4-%EC%9E%AC%EC%83%9D-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EB%A7%8C%EB%93%A4%EA%B8%B0)에 정리해두었습니다.**
+  - **자세한건 [블로그 게시글](https://velog.io/@jinyoung985/Portfolio-%EC%98%A4%EB%94%94%EC%98%A4-%EB%85%B9%EC%9D%8C-%EC%9E%AC%EC%83%9D-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EB%A7%8C%EB%93%A4%EA%B8%B0)에 정리해두었습니다.**
     <br/>
 
 ### [박찬영]
