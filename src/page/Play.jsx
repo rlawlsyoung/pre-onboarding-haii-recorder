@@ -19,7 +19,7 @@ const Play = () => {
         <Empty />
       )}
 
-      {selectedRecord !== '' ? <WaveForm selectedRecord={selectedRecord} /> : null}
+      {selectedRecord ? <WaveForm selectedRecord={selectedRecord} /> : null}
     </Section>
   );
 };

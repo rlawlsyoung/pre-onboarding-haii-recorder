@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import storage from '../../firebase';
-import { mainColor } from '../../Theme';
+
+import { mainColor } from '../../theme';
 
 const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn }) => {
   const navigate = useNavigate();
-  const [clickCheck, setClickCheck] = useState(false);
   const [renderCheck, setRenderCheck] = useState(true);
   const [clickNum, setClickNum] = useState('');
   const [clickName, setClickName] = useState('');
@@ -28,7 +28,6 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
 
   const clickList = async e => {
     setClickNum(e.currentTarget.value);
-    setClickCheck(!clickCheck);
     setClickName(e.currentTarget.id);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
@@ -42,12 +41,16 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
     const removeRef = ref(storage, `audio/${clickName}`);
     try {
       await deleteObject(removeRef).then(res => setRenderCheck(!renderCheck));
+      setClickNum('');
+      setClickName('');
     } catch (error) {
       console.log(error);
     }
   };
 
   const moveHandle = () => {
+    setClickNum('');
+    setClickName('');
     navigate(`/${clickName}`);
     setOpenSide(!openSide);
   };
