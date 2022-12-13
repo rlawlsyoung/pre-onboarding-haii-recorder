@@ -48,11 +48,11 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
     }
   };
 
-  const moveHandle = () => {
+  const moveHandle = async () => {
+    await navigate(`/${clickName}`);
+    setOpenSide(!openSide);
     setClickNum('');
     setClickName('');
-    navigate(`/${clickName}`);
-    setOpenSide(!openSide);
   };
 
   return (
