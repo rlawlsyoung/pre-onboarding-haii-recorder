@@ -27,13 +27,15 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
   }, [isMessageOn, renderCheck]);
 
   const clickList = async e => {
-    setClickNum(e.currentTarget.value);
-    setClickName(e.currentTarget.id);
-    try {
-      const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
-      setSelectedRecord(url);
-    } catch (error) {
-      console.log(error);
+    if (clickNum !== e.currentTarget.value) {
+      setClickNum(e.currentTarget.value);
+      setClickName(e.currentTarget.id);
+      try {
+        const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
+        setSelectedRecord(url);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -48,8 +50,8 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
     }
   };
 
-  const moveHandle = async () => {
-    await navigate(`/${clickName}`);
+  const moveHandle = () => {
+    navigate(`/${clickName}`);
     setOpenSide(!openSide);
     setClickNum('');
     setClickName('');
