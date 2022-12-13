@@ -67,7 +67,7 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
               return (
                 <li key={list.name} value={index} id={list.name} onClick={clickList}>
                   <div className='date-name'>
-                    <span>{list.name.split('|')[0]}</span>
+                    <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
                   </div>
                   {clickNum === index && (
@@ -114,6 +114,7 @@ const StyledSideBar = styled.div`
     .btn-box {
       span {
         margin: 0 7px;
+        font-weight: 700;
       }
     }
   }
@@ -123,7 +124,7 @@ const StyledSideBar = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-evenly;
-      height: 10vh;
+      height: 75px;
       padding: 0 10px;
       font-size: 130%;
       text-align: center;
@@ -138,6 +139,9 @@ const StyledSideBar = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    .date {
+      font-weight: 700;
+    }
     span {
       margin: 4px 0;
     }
