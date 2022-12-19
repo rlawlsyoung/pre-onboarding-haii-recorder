@@ -11,6 +11,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
   const [renderCheck, setRenderCheck] = useState(true);
   const [clickName, setClickName] = useState('');
   const [audioList, setAudioList] = useState('');
+  const [isPlay, setIsPlay] = useState(false);
   const audioRef = ref(storage, `audio`);
 
   useEffect(() => {
@@ -26,27 +27,37 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
   }, [isMessageOn, renderCheck]);
 
   useEffect(() => {
-    navigate(`/${clickName}`);
-    setOpenSide(!openSide);
+    if (isPlay) {
+      navigate(`/${clickName}`);
+      setOpenSide(false);
+    } else {
+      handleRemove();
+    }
   }, [selectedRecord]);
 
   const handlePlay = async e => {
     setClickName(e.currentTarget.id);
-
+    setIsPlay(true);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
       setSelectedRecord(url);
     } catch (error) {
       console.log(error);
     }
-
-    const moveHandle = () => {
-      navigate(`/${clickName}`);
-      setOpenSide(!openSide);
-    };
   };
 
-  const deleteList = async e => {
+  const remove = async e => {
+    setClickName(e.currentTarget.id);
+    setIsPlay(false);
+    try {
+      const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
+      setSelectedRecord(url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRemove = async () => {
     const removeRef = ref(storage, `audio/${clickName}`);
     try {
       await deleteObject(removeRef).then(res => setRenderCheck(!renderCheck));
@@ -72,7 +83,9 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
                     <span value={index} id={list.name} onClick={handlePlay}>
                       재생
                     </span>
-                    <span onClick={deleteList}>삭제</span>
+                    <span value={index} id={list.name} onClick={remove}>
+                      삭제
+                    </span>
                   </div>
                 </li>
               );
@@ -111,9 +124,10 @@ const StyledSideBar = styled.div`
   .side-body {
     .btn-box {
       span {
-        margin: 0 10px;
-        font-size: 17px;
+        margin: 0 12.5px;
+        font-size: 18px;
         font-weight: 700;
+        cursor: pointer;
       }
     }
   }
