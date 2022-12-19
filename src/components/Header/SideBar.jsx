@@ -70,10 +70,12 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
                     <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
                   </div>
-                  <div className='btn-box'>
-                    <span onClick={moveHandle}>재생</span>
-                    <span onClick={deleteList}>삭제</span>
-                  </div>
+                  {clickNum === index && (
+                    <div className='btn-box'>
+                      <span onClick={moveHandle}>재생</span>
+                      <span onClick={deleteList}>삭제</span>
+                    </div>
+                  )}
                 </li>
               );
             })}
@@ -112,7 +114,6 @@ const StyledSideBar = styled.div`
     .btn-box {
       span {
         margin: 0 7px;
-        font-size: 16px;
         font-weight: 700;
       }
     }

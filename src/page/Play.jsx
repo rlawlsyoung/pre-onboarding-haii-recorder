@@ -11,7 +11,7 @@ const Play = () => {
 
   return (
     <Section>
-      {params.id ? (
+      {params.id && selectedRecord ? (
         <Container>
           <Title className='title'>{`제목 : ${params.id}`}</Title>
         </Container>
@@ -19,7 +19,7 @@ const Play = () => {
         <Empty />
       )}
 
-      {selectedRecord ? <WaveForm selectedRecord={selectedRecord} /> : null}
+      {params.id && selectedRecord ? <WaveForm selectedRecord={selectedRecord} /> : null}
     </Section>
   );
 };
