@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaTrashAlt, FaPlay } from 'react-icons/fa';
+
 import styled from 'styled-components';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import storage from '../../firebase';
@@ -81,10 +83,10 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
                   </div>
                   <div className='btn-box'>
                     <span value={index} id={list.name} onClick={handlePlay}>
-                      재생
+                      <FaPlay />
                     </span>
                     <span value={index} id={list.name} onClick={remove}>
-                      삭제
+                      <FaTrashAlt />
                     </span>
                   </div>
                 </li>
@@ -124,9 +126,7 @@ const StyledSideBar = styled.div`
   .side-body {
     .btn-box {
       span {
-        margin: 0 12.5px;
-        font-size: 18px;
-        font-weight: 700;
+        margin: 0 15px;
         cursor: pointer;
       }
     }
