@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { selectedRecordAtom } from '../../atom';
 import styled from 'styled-components';
 import RecordBtn from './RecordBtn';
@@ -8,7 +8,7 @@ import MenuBtn from './MenuBtn';
 import SideBar from './SideBar';
 
 const Header = ({ recOn, isMessageOn }) => {
-  const setSelectedRecord = useSetRecoilState(selectedRecordAtom);
+  const [selectedRecord, setSelectedRecord] = useRecoilState(selectedRecordAtom);
   const [openSide, setOpenSide] = useState(false);
 
   return (
@@ -23,9 +23,10 @@ const Header = ({ recOn, isMessageOn }) => {
         />
       </StyledHeader>
       <SideBar //
+        selectedRecord={selectedRecord}
+        setSelectedRecord={setSelectedRecord}
         openSide={openSide}
         setOpenSide={setOpenSide}
-        setSelectedRecord={setSelectedRecord}
         recOn={recOn}
         isMessageOn={isMessageOn}
       />

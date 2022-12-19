@@ -6,10 +6,9 @@ import storage from '../../firebase';
 
 import { mainColor } from '../../theme';
 
-const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn }) => {
+const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn }) => {
   const navigate = useNavigate();
   const [renderCheck, setRenderCheck] = useState(true);
-  const [clickNum, setClickNum] = useState('');
   const [clickName, setClickName] = useState('');
   const [audioList, setAudioList] = useState('');
   const audioRef = ref(storage, `audio`);
@@ -26,35 +25,34 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
       })();
   }, [isMessageOn, renderCheck]);
 
-  const clickList = async e => {
-    if (clickNum !== e.currentTarget.value) {
-      setClickNum(e.currentTarget.value);
-      setClickName(e.currentTarget.id);
-      try {
-        const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
-        setSelectedRecord(url);
-      } catch (error) {
-        console.log(error);
-      }
+  useEffect(() => {
+    navigate(`/${clickName}`);
+    setOpenSide(!openSide);
+  }, [selectedRecord]);
+
+  const handlePlay = async e => {
+    setClickName(e.currentTarget.id);
+
+    try {
+      const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
+      setSelectedRecord(url);
+    } catch (error) {
+      console.log(error);
     }
+
+    const moveHandle = () => {
+      navigate(`/${clickName}`);
+      setOpenSide(!openSide);
+    };
   };
 
   const deleteList = async e => {
     const removeRef = ref(storage, `audio/${clickName}`);
     try {
       await deleteObject(removeRef).then(res => setRenderCheck(!renderCheck));
-      setClickNum('');
-      setClickName('');
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const moveHandle = () => {
-    navigate(`/${clickName}`);
-    setOpenSide(!openSide);
-    setClickNum('');
-    setClickName('');
   };
 
   return (
@@ -65,17 +63,17 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
           <ul className='side-body'>
             {audioList.map((list, index) => {
               return (
-                <li key={list.name} value={index} id={list.name} onClick={clickList}>
+                <li key={list.name}>
                   <div className='date-name'>
                     <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
                   </div>
-                  {clickNum === index && (
-                    <div className='btn-box'>
-                      <span onClick={moveHandle}>재생</span>
-                      <span onClick={deleteList}>삭제</span>
-                    </div>
-                  )}
+                  <div className='btn-box'>
+                    <span value={index} id={list.name} onClick={handlePlay}>
+                      재생
+                    </span>
+                    <span onClick={deleteList}>삭제</span>
+                  </div>
                 </li>
               );
             })}
@@ -113,7 +111,8 @@ const StyledSideBar = styled.div`
   .side-body {
     .btn-box {
       span {
-        margin: 0 7px;
+        margin: 0 10px;
+        font-size: 17px;
         font-weight: 700;
       }
     }
