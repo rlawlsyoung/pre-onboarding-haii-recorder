@@ -28,25 +28,13 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
   }, [isMessageOn, renderCheck]);
 
   useEffect(() => {
-    if (isPlay) {
-      navigate(`/${clickName}`);
-    } else if (!isPlay) {
-      const removeAudio = async () => {
-        const removeRef = ref(storage, `audio/${clickName}`);
-        try {
-          await deleteObject(removeRef).then(() => setRenderCheck(!renderCheck));
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      removeAudio();
-      console.log('hi');
-    }
+    navigate(`/${clickName}`);
+    setOpenSide(false);
   }, [selectedRecord]);
 
   const handlePlay = async e => {
     setClickName(e.currentTarget.id);
-    setIsPlay(true);
+    navigate(`/${clickName}`);
     setOpenSide(false);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
@@ -57,11 +45,9 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
   };
 
   const handleRemove = async e => {
-    setClickName(e.currentTarget.id);
-    setIsPlay(false);
+    const removeRef = ref(storage, `audio/${e.currentTarget.id}`);
     try {
-      const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
-      setSelectedRecord(url);
+      await deleteObject(removeRef).then(() => setRenderCheck(!renderCheck));
     } catch (error) {
       console.log(error);
     }
