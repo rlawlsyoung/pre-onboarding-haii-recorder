@@ -1,15 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { selectedRecordAtom } from '../../atom';
+import { selectedRecordAtom, clickedNameAtom } from '../../atom';
 import styled from 'styled-components';
 import logo from '../../assets/img/Header/haii_logo.png';
 
 const Logo = ({ recOn }) => {
   const setSelectedRecord = useSetRecoilState(selectedRecordAtom);
+  const setClickedName = useSetRecoilState(clickedNameAtom);
   const navigate = useNavigate();
 
   const goHome = () => {
     recOn && navigate('/');
+    setClickedName('');
     setSelectedRecord('');
   };
 

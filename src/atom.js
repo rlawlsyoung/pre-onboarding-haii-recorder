@@ -15,4 +15,9 @@ const isMessageOnAtom = atom({
   default: false,
 });
 
-export { selectedRecordAtom, recOnAtom, isMessageOnAtom };
+const clickedNameAtom = atom({
+  key: 'clickedName',
+  default: '',
+});
+
+export { selectedRecordAtom, recOnAtom, isMessageOnAtom, clickedNameAtom };

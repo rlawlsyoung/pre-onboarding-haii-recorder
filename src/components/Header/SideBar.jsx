@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { clickedNameAtom } from '../../atom';
 import { FaTrashAlt, FaPlay } from 'react-icons/fa';
-
 import styled from 'styled-components';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import storage from '../../firebase';
@@ -11,9 +12,8 @@ import { mainColor } from '../../theme';
 const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isMessageOn }) => {
   const navigate = useNavigate();
   const [renderCheck, setRenderCheck] = useState(true);
-  const [clickName, setClickName] = useState('');
+  const [clickedName, setClickedName] = useRecoilState(clickedNameAtom);
   const [audioList, setAudioList] = useState('');
-  const [isPlay, setIsPlay] = useState(false);
   const audioRef = ref(storage, `audio`);
 
   useEffect(() => {
@@ -28,13 +28,13 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
   }, [isMessageOn, renderCheck]);
 
   useEffect(() => {
-    navigate(`/${clickName}`);
+    navigate(`/${clickedName}`);
     setOpenSide(false);
   }, [selectedRecord]);
 
   const handlePlay = async e => {
-    setClickName(e.currentTarget.id);
-    navigate(`/${clickName}`);
+    setClickedName(e.currentTarget.id);
+    navigate(`/${clickedName}`);
     setOpenSide(false);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
@@ -53,6 +53,8 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
     }
   };
 
+  console.log(audioList);
+  console.log(selectedRecord);
   return (
     <>
       {audioList && (
@@ -66,7 +68,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
                     <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
                   </div>
-                  {clickName === list.name ? (
+                  {clickedName === list.name ? (
                     <div className='playing'>재생 중</div>
                   ) : (
                     <div className='btn-box'>
