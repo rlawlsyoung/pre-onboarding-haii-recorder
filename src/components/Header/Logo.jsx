@@ -15,7 +15,7 @@ const Logo = ({ recOn }) => {
 
   return (
     <Container recOn={recOn}>
-      <img src={logo} alt='HAII recoder logo' onClick={goHome}></img>
+      <img src={logo} alt='HAII recorder logo' onClick={goHome}></img>
     </Container>
   );
 };

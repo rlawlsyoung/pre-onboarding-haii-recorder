@@ -8,7 +8,7 @@ import storage from '../../firebase';
 
 import { mainColor } from '../../theme';
 
-const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn }) => {
+const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isMessageOn }) => {
   const navigate = useNavigate();
   const [renderCheck, setRenderCheck] = useState(true);
   const [clickName, setClickName] = useState('');
@@ -17,29 +17,37 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
   const audioRef = ref(storage, `audio`);
 
   useEffect(() => {
-    recOn &&
-      (async () => {
-        try {
-          const { items } = await listAll(audioRef);
-          setAudioList(items.reverse());
-        } catch (error) {
-          console.log(error);
-        }
-      })();
+    (async () => {
+      try {
+        const { items } = await listAll(audioRef);
+        setAudioList(items.reverse());
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, [isMessageOn, renderCheck]);
 
   useEffect(() => {
     if (isPlay) {
       navigate(`/${clickName}`);
-      setOpenSide(false);
-    } else {
-      handleRemove();
+    } else if (!isPlay) {
+      const removeAudio = async () => {
+        const removeRef = ref(storage, `audio/${clickName}`);
+        try {
+          await deleteObject(removeRef).then(() => setRenderCheck(!renderCheck));
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      removeAudio();
+      console.log('hi');
     }
   }, [selectedRecord]);
 
   const handlePlay = async e => {
     setClickName(e.currentTarget.id);
     setIsPlay(true);
+    setOpenSide(false);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
       setSelectedRecord(url);
@@ -48,21 +56,12 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
     }
   };
 
-  const remove = async e => {
+  const handleRemove = async e => {
     setClickName(e.currentTarget.id);
     setIsPlay(false);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
       setSelectedRecord(url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleRemove = async () => {
-    const removeRef = ref(storage, `audio/${clickName}`);
-    try {
-      await deleteObject(removeRef).then(res => setRenderCheck(!renderCheck));
     } catch (error) {
       console.log(error);
     }
@@ -81,14 +80,18 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, rec
                     <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
                   </div>
-                  <div className='btn-box'>
-                    <span value={index} id={list.name} onClick={handlePlay}>
-                      <FaPlay />
-                    </span>
-                    <span value={index} id={list.name} onClick={remove}>
-                      <FaTrashAlt />
-                    </span>
-                  </div>
+                  {clickName === list.name ? (
+                    <div className='playing'>재생 중</div>
+                  ) : (
+                    <div className='btn-box'>
+                      <span value={index} id={list.name} onClick={handlePlay}>
+                        <FaPlay />
+                      </span>
+                      <span value={index} id={list.name} onClick={handleRemove}>
+                        <FaTrashAlt />
+                      </span>
+                    </div>
+                  )}
                 </li>
               );
             })}
@@ -126,9 +129,16 @@ const StyledSideBar = styled.div`
   .side-body {
     .btn-box {
       span {
-        margin: 0 15px;
+        margin-left: 30px;
+        font-size: 20px;
         cursor: pointer;
       }
+    }
+    .playing {
+      width: 70px;
+      margin-left: 30px;
+      font-size: 20px;
+      font-weight: 700;
     }
   }
   ul {
