@@ -13,7 +13,7 @@ const Play = () => {
     <Section>
       {params.id && selectedRecord ? (
         <Container>
-          <Title className='title'>{`제목 : ${params.id}`}</Title>
+          <Title className='title'>{params.id}</Title>
         </Container>
       ) : (
         <Empty />
@@ -30,14 +30,14 @@ const Section = styled.section`
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
   width: 90%;
   margin: auto;
 `;
 
 const Title = styled.h1`
   font-size: 25px;
+  font-weight: 700;
 
   @media screen and(max-width: 480px) {
     .title {

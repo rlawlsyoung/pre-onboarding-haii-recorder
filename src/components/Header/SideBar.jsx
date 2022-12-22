@@ -63,7 +63,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
           <ul className='side-body'>
             {audioList.map((list, index) => {
               return (
-                <li key={list.name}>
+                <StyledLi key={list.name} clickedName={clickedName} listName={list.name}>
                   <div className='date-name'>
                     <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
@@ -80,7 +80,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
                       </span>
                     </div>
                   )}
-                </li>
+                </StyledLi>
               );
             })}
           </ul>
@@ -131,20 +131,8 @@ const StyledSideBar = styled.div`
   }
   ul {
     overflow-y: auto;
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      height: 75px;
-      padding: 0 10px;
-      font-size: 130%;
-      text-align: center;
-      transition: box-shadow 0.3s;
-      &:hover {
-        box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
-      }
-    }
   }
+
   .date-name {
     display: flex;
     flex-direction: column;
@@ -156,5 +144,20 @@ const StyledSideBar = styled.div`
     span {
       margin: 4px 0;
     }
+  }
+`;
+
+const StyledLi = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 75px;
+  padding: 0 10px;
+  background-color: ${({ clickedName, listName }) => clickedName == listName && '#efefef'};
+  font-size: 130%;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  &:hover {
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   }
 `;

@@ -31,7 +31,7 @@ const WaveForm = () => {
         cursorWidth: 1,
         backend: 'WebAudio',
         height: 180,
-        progressColor: '#00aac5',
+        progressColor: mainColor,
         responsive: true,
         waveColor: '#C4C4C4',
         cursorColor: 'transparent',
@@ -40,11 +40,10 @@ const WaveForm = () => {
     }
     return () => wavesurfer.current.destroy();
   }, [selectedRecord]);
+
   return (
     <WaveformContianer>
       <Wave id='waveform' ref={waveformRef} />
-      <audio id='track' src={selectedRecord} />
-
       <PlayButton onClick={handlePlay}>
         {play ? <BsFillPlayFill className='play-btn' /> : <BsFillPauseFill className='pause-btn' />}
       </PlayButton>

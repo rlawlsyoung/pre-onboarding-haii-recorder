@@ -126,7 +126,7 @@ const Record = ({ recOn, setRecOn, isMessageOn, setIsMessageOn }) => {
   };
 
   const onSubmitAudioFile = useCallback(() => {
-    const sound = new File([audioUrl], `${year}-${month}-${date}|${hours}:${minutes}:${seconds}.mp3`, {
+    const sound = new File([audioUrl], `${year}-${month}-${date} | ${hours}:${minutes}:${seconds}.mp3`, {
       lastModified: new Date().getTime(),
       type: 'audio',
     });
