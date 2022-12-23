@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { clickedNameAtom } from '../../atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { clickedNameAtom, isPlayingAtom } from '../../atom';
 import { FaTrashAlt, FaPlay } from 'react-icons/fa';
 import styled from 'styled-components';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -11,8 +11,10 @@ import { mainColor } from '../../theme';
 
 const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isMessageOn }) => {
   const navigate = useNavigate();
-  const [renderCheck, setRenderCheck] = useState(true);
   const [clickedName, setClickedName] = useRecoilState(clickedNameAtom);
+  const setIsPlaying = useSetRecoilState(isPlayingAtom);
+
+  const [renderCheck, setRenderCheck] = useState(true);
   const [audioList, setAudioList] = useState('');
   const audioRef = ref(storage, `audio`);
 
@@ -34,6 +36,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
 
   const handlePlay = async e => {
     setClickedName(e.currentTarget.id);
+    setIsPlaying(false);
     navigate(`/${clickedName}`);
     setOpenSide(false);
     try {
@@ -53,8 +56,6 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
     }
   };
 
-  console.log(audioList);
-  console.log(selectedRecord);
   return (
     <>
       {audioList && (

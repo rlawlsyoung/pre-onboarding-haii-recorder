@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { selectedRecordAtom } from '../../atom';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { selectedRecordAtom, isPlayingAtom } from '../../atom';
 import WaveSurfer from 'wavesurfer.js';
 import styled from 'styled-components';
 
@@ -10,13 +10,13 @@ import { BsFillPauseFill } from 'react-icons/bs';
 
 const WaveForm = () => {
   const selectedRecord = useRecoilValue(selectedRecordAtom);
-  const [play, setPlay] = useState(true);
+  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingAtom);
 
   const waveformRef = useRef();
   const wavesurfer = useRef(null);
 
   const handlePlay = () => {
-    setPlay(play => !play);
+    setIsPlaying(!isPlaying);
     wavesurfer.current.playPause();
   };
 
@@ -42,16 +42,16 @@ const WaveForm = () => {
   }, [selectedRecord]);
 
   return (
-    <WaveformContianer>
+    <WaveformContainer>
       <Wave id='waveform' ref={waveformRef} />
       <PlayButton onClick={handlePlay}>
-        {play ? <BsFillPlayFill className='play-btn' /> : <BsFillPauseFill className='pause-btn' />}
+        {isPlaying ? <BsFillPauseFill className='pause-btn' /> : <BsFillPlayFill className='play-btn' />}
       </PlayButton>
-    </WaveformContianer>
+    </WaveformContainer>
   );
 };
 
-const WaveformContianer = styled.div`
+const WaveformContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

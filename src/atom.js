@@ -20,4 +20,9 @@ const clickedNameAtom = atom({
   default: '',
 });
 
-export { selectedRecordAtom, recOnAtom, isMessageOnAtom, clickedNameAtom };
+const isPlayingAtom = atom({
+  key: 'isPlaying',
+  default: false,
+});
+
+export { selectedRecordAtom, recOnAtom, isMessageOnAtom, clickedNameAtom, isPlayingAtom };
