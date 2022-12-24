@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { selectedRecordAtom } from '../../atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { selectedRecordAtom, recOnAtom, isMessageOnAtom } from '../../atom';
 import styled from 'styled-components';
 import RecordBtn from './RecordBtn';
 import Logo from './Logo';
 import MenuBtn from './MenuBtn';
 import SideBar from './SideBar';
 
-const Header = ({ recOn, isMessageOn }) => {
+const Header = () => {
   const [selectedRecord, setSelectedRecord] = useRecoilState(selectedRecordAtom);
+  const recOn = useRecoilValue(recOnAtom);
+  const isMessageOn = useRecoilValue(isMessageOnAtom);
   const [openSide, setOpenSide] = useState(false);
 
   return (

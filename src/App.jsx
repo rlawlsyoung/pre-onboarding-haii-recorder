@@ -7,31 +7,15 @@ import Record from './page/Record';
 import Header from './components/Header/Header';
 
 function App() {
-  const [recOn, setRecOn] = useState(true);
-  const [isMessageOn, setIsMessageOn] = useState(false);
-
   return (
     <>
       <GlobalStyle />
       <RecoilRoot>
-        <Header //
-          recOn={recOn}
-          isMessageOn={isMessageOn}
-        />
+        <Header />
         <Routes>
           <Route path='/' element={<Play />} />
           <Route path='/:id' element={<Play />} />
-          <Route
-            path='/record'
-            element={
-              <Record //
-                recOn={recOn}
-                setRecOn={setRecOn}
-                isMessageOn={isMessageOn}
-                setIsMessageOn={setIsMessageOn}
-              />
-            }
-          />
+          <Route path='/record' element={<Record />} />
         </Routes>
       </RecoilRoot>
     </>
