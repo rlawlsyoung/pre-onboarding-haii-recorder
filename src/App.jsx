@@ -8,17 +8,15 @@ import Header from './components/Header/Header';
 
 function App() {
   return (
-    <>
+    <RecoilRoot>
       <GlobalStyle />
-      <RecoilRoot>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Play />} />
-          <Route path='/:id' element={<Play />} />
-          <Route path='/record' element={<Record />} />
-        </Routes>
-      </RecoilRoot>
-    </>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Play />} />
+        <Route path='/:id' element={<Play />} />
+        <Route path='/record' element={<Record />} />
+      </Routes>
+    </RecoilRoot>
   );
 }
 

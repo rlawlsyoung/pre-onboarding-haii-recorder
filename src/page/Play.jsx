@@ -25,14 +25,17 @@ const Play = () => {
 };
 
 const Section = styled.section`
-  margin-top: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 80vh;
 `;
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 90%;
-  margin: auto;
+  align-items: center;
+  height: 75px;
 `;
 
 const Title = styled.h1`

@@ -56,11 +56,10 @@ const WaveformContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 87%;
-  margin: auto;
-  margin-top: 7%;
+  width: 100%;
+  padding: 0 25px;
   background: transparent;
-  gap: 2rem;
+
   div {
     font-size: 30px;
   }
@@ -68,6 +67,7 @@ const WaveformContainer = styled.div`
 
 const Wave = styled.div`
   width: 100%;
+  margin: 10px 0;
 `;
 
 const PlayButton = styled.button`
