@@ -1,40 +1,46 @@
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { selectedRecordAtom } from '../atom';
 import styled from 'styled-components';
 import Empty from '../components/Play/Empty';
 import WaveForm from '../components/Play/WaveForm';
 
-const Play = ({ selectedRecord }) => {
+const Play = () => {
+  const selectedRecord = useRecoilValue(selectedRecordAtom);
   const params = useParams();
 
   return (
     <Section>
-      {params.id ? (
+      {params.id && selectedRecord ? (
         <Container>
-          <Title className='title'>{`제목 : ${params.id}`}</Title>
+          <Title className='title'>{params.id}</Title>
         </Container>
       ) : (
         <Empty />
       )}
 
-      {selectedRecord !== '' ? <WaveForm selectedRecord={selectedRecord} /> : null}
+      {params.id && selectedRecord ? <WaveForm selectedRecord={selectedRecord} /> : null}
     </Section>
   );
 };
 
 const Section = styled.section`
-  margin-top: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 80vh;
 `;
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  width: 90%;
-  margin: auto;
+  height: 75px;
 `;
 
 const Title = styled.h1`
   font-size: 25px;
+  font-weight: 700;
 
   @media screen and(max-width: 480px) {
     .title {

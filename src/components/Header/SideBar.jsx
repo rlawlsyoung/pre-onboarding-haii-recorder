@@ -1,35 +1,44 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { clickedNameAtom, isPlayingAtom } from '../../atom';
+import { FaTrashAlt, FaPlay } from 'react-icons/fa';
 import styled from 'styled-components';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import storage from '../../firebase';
-import { mainColor } from '../../Theme';
 
-const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn }) => {
+import { mainColor } from '../../theme';
+
+const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isMessageOn }) => {
   const navigate = useNavigate();
-  const [clickCheck, setClickCheck] = useState(false);
+  const [clickedName, setClickedName] = useRecoilState(clickedNameAtom);
+  const setIsPlaying = useSetRecoilState(isPlayingAtom);
+
   const [renderCheck, setRenderCheck] = useState(true);
-  const [clickNum, setClickNum] = useState('');
-  const [clickName, setClickName] = useState('');
   const [audioList, setAudioList] = useState('');
   const audioRef = ref(storage, `audio`);
 
   useEffect(() => {
-    recOn &&
-      (async () => {
-        try {
-          const { items } = await listAll(audioRef);
-          setAudioList(items.reverse());
-        } catch (error) {
-          console.log(error);
-        }
-      })();
+    (async () => {
+      try {
+        const { items } = await listAll(audioRef);
+        setAudioList(items.reverse());
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, [isMessageOn, renderCheck]);
 
-  const clickList = async e => {
-    setClickNum(e.currentTarget.value);
-    setClickCheck(!clickCheck);
-    setClickName(e.currentTarget.id);
+  useEffect(() => {
+    navigate(`/${clickedName}`);
+    setOpenSide(false);
+  }, [selectedRecord]);
+
+  const handlePlay = async e => {
+    setClickedName(e.currentTarget.id);
+    setIsPlaying(false);
+    navigate(`/${clickedName}`);
+    setOpenSide(false);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
       setSelectedRecord(url);
@@ -38,18 +47,13 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
     }
   };
 
-  const deleteList = async e => {
-    const removeRef = ref(storage, `audio/${clickName}`);
+  const handleRemove = async e => {
+    const removeRef = ref(storage, `audio/${e.currentTarget.id}`);
     try {
-      await deleteObject(removeRef).then(res => setRenderCheck(!renderCheck));
+      await deleteObject(removeRef).then(() => setRenderCheck(!renderCheck));
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const moveHandle = () => {
-    navigate(`/${clickName}`);
-    setOpenSide(!openSide);
   };
 
   return (
@@ -60,18 +64,24 @@ const SideBar = ({ setSelectedRecord, openSide, setOpenSide, recOn, isMessageOn 
           <ul className='side-body'>
             {audioList.map((list, index) => {
               return (
-                <li key={list.name} value={index} id={list.name} onClick={clickList}>
+                <StyledLi key={list.name} clickedName={clickedName} listName={list.name}>
                   <div className='date-name'>
-                    <span>{list.name.split('|')[0]}</span>
+                    <span className='date'>{list.name.split('|')[0]}</span>
                     <span>{list.name.split('|')[1]}</span>
                   </div>
-                  {clickNum === index && (
+                  {clickedName === list.name ? (
+                    <div className='playing'>재생 중</div>
+                  ) : (
                     <div className='btn-box'>
-                      <span onClick={moveHandle}>재생</span>
-                      <span onClick={deleteList}>삭제</span>
+                      <span value={index} id={list.name} onClick={handlePlay}>
+                        <FaPlay />
+                      </span>
+                      <span value={index} id={list.name} onClick={handleRemove}>
+                        <FaTrashAlt />
+                      </span>
                     </div>
                   )}
-                </li>
+                </StyledLi>
               );
             })}
           </ul>
@@ -108,33 +118,47 @@ const StyledSideBar = styled.div`
   .side-body {
     .btn-box {
       span {
-        margin: 0 7px;
+        margin-left: 30px;
+        font-size: 20px;
+        cursor: pointer;
       }
+    }
+    .playing {
+      width: 70px;
+      margin-left: 30px;
+      font-size: 20px;
+      font-weight: 700;
     }
   }
   ul {
     overflow-y: auto;
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      height: 10vh;
-      padding: 0 10px;
-      font-size: 130%;
-      text-align: center;
-      transition: box-shadow 0.3s;
-      &:hover {
-        box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
-      }
-    }
   }
+
   .date-name {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    .date {
+      font-weight: 700;
+    }
     span {
       margin: 4px 0;
     }
+  }
+`;
+
+const StyledLi = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 75px;
+  padding: 0 10px;
+  background-color: ${({ clickedName, listName }) => clickedName == listName && '#efefef'};
+  font-size: 130%;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  &:hover {
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   }
 `;

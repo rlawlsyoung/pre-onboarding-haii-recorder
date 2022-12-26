@@ -1,19 +1,22 @@
-import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { selectedRecordAtom, isPlayingAtom } from '../../atom';
 import WaveSurfer from 'wavesurfer.js';
+import styled from 'styled-components';
 
 import { mainColor } from '../../theme';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { BsFillPauseFill } from 'react-icons/bs';
 
-const WaveForm = ({ selectedRecord }) => {
-  const [play, setPlay] = useState(true);
+const WaveForm = () => {
+  const selectedRecord = useRecoilValue(selectedRecordAtom);
+  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingAtom);
 
   const waveformRef = useRef();
   const wavesurfer = useRef(null);
 
   const handlePlay = () => {
-    setPlay(play => !play);
+    setIsPlaying(!isPlaying);
     wavesurfer.current.playPause();
   };
 
@@ -28,7 +31,7 @@ const WaveForm = ({ selectedRecord }) => {
         cursorWidth: 1,
         backend: 'WebAudio',
         height: 180,
-        progressColor: '#00aac5',
+        progressColor: mainColor,
         responsive: true,
         waveColor: '#C4C4C4',
         cursorColor: 'transparent',
@@ -37,28 +40,26 @@ const WaveForm = ({ selectedRecord }) => {
     }
     return () => wavesurfer.current.destroy();
   }, [selectedRecord]);
-  return (
-    <WaveformContianer>
-      <Wave id='waveform' ref={waveformRef} />
-      <audio id='track' src={selectedRecord} />
 
+  return (
+    <WaveformContainer>
+      <Wave id='waveform' ref={waveformRef} />
       <PlayButton onClick={handlePlay}>
-        {play ? <BsFillPlayFill className='play-btn' /> : <BsFillPauseFill className='pause-btn' />}
+        {isPlaying ? <BsFillPauseFill className='pause-btn' /> : <BsFillPlayFill className='play-btn' />}
       </PlayButton>
-    </WaveformContianer>
+    </WaveformContainer>
   );
 };
 
-const WaveformContianer = styled.div`
+const WaveformContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 87%;
-  margin: auto;
-  margin-top: 7%;
+  width: 100%;
+  padding: 0 25px;
   background: transparent;
-  gap: 2rem;
+
   div {
     font-size: 30px;
   }
@@ -66,6 +67,7 @@ const WaveformContianer = styled.div`
 
 const Wave = styled.div`
   width: 100%;
+  margin: 10px 0;
 `;
 
 const PlayButton = styled.button`
