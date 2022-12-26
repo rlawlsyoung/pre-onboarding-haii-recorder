@@ -9,7 +9,7 @@
 
 ## 배포 링크
 
-https://jocular-empanada-50806c.netlify.app/
+https://haii-recorder.netlify.app
 
 ## 팀 노션
 
