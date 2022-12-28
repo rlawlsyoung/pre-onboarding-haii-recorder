@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { recOnAtom, isMessageOnAtom } from '../atom';
 import { ref, uploadBytes } from 'firebase/storage';
 import storage from '../firebase';
-import PlayButton from '../components/Record/PlayButton';
+import RecordButton from '../components/Record/RecordButton';
 import MaximumSeconds from '../components/Record/MaximumSeconds';
 import SaveComplete from '../components/Record/SaveComplete';
 import styled from 'styled-components';
@@ -147,7 +147,7 @@ const Record = () => {
         </div>
         REC
       </div>
-      <PlayButton
+      <RecordButton
         recOn={recOn}
         startRecord={startRecord}
         stopRecord={stopRecord}

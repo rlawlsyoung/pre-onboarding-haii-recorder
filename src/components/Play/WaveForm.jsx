@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedRecordAtom, isPlayingAtom } from '../../atom';
-import WaveSurfer from 'wavesurfer.js';
 import styled from 'styled-components';
+import WaveSurfer from 'wavesurfer.js';
+import PlayButton from './PlayButton';
 
 import { mainColor } from '../../theme';
-import { BsFillPlayFill } from 'react-icons/bs';
-import { BsFillPauseFill } from 'react-icons/bs';
 
 const WaveForm = () => {
   const selectedRecord = useRecoilValue(selectedRecordAtom);
@@ -44,9 +43,7 @@ const WaveForm = () => {
   return (
     <WaveformContainer>
       <Wave id='waveform' ref={waveformRef} />
-      <PlayButton onClick={handlePlay}>
-        {isPlaying ? <BsFillPauseFill className='pause-btn' /> : <BsFillPlayFill className='play-btn' />}
-      </PlayButton>
+      <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} />
     </WaveformContainer>
   );
 };
@@ -67,28 +64,7 @@ const WaveformContainer = styled.div`
 
 const Wave = styled.div`
   width: 100%;
-  margin: 10px 0;
+  margin: 25px 0;
 `;
 
-const PlayButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90px;
-  height: 90px;
-  background: ${mainColor};
-  color: white;
-  border-radius: 50%;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding-bottom: 3px;
-
-  .play-btn {
-    font-size: 30px;
-  }
-  .pause-btn {
-    font-size: 30px;
-  }
-`;
 export default WaveForm;

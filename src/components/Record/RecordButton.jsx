@@ -3,7 +3,7 @@ import { FaStop, FaMicrophoneAlt } from 'react-icons/fa';
 import styled from 'styled-components';
 import { mainColor } from '../../theme';
 
-const PlayButton = ({
+const RecordButton = ({
   recOn,
   startRecord,
   stopRecord,
@@ -16,7 +16,7 @@ const PlayButton = ({
   const [btnDisabled, setBtnDisabled] = useState(false);
   const clickButton = () => setButtonClicked(!buttonClicked);
   return (
-    <PlayButtonBlock btnDisabled={btnDisabled}>
+    <RecordButtonBlock btnDisabled={btnDisabled}>
       <button
         disabled={btnDisabled}
         onClick={() => {
@@ -33,13 +33,13 @@ const PlayButton = ({
           }
         }}
       >
-        {buttonClicked ? <FaStop className='icon' alt='stop' /> : <FaMicrophoneAlt className='icon' alt='play' />}
+        {buttonClicked ? <FaStop className='icon' /> : <FaMicrophoneAlt className='icon' />}
       </button>
-    </PlayButtonBlock>
+    </RecordButtonBlock>
   );
 };
 
-const PlayButtonBlock = styled.div`
+const RecordButtonBlock = styled.div`
   button {
     display: flex;
     align-items: center;
@@ -73,4 +73,4 @@ const PlayButtonBlock = styled.div`
   }
 `;
 
-export default PlayButton;
+export default RecordButton;
