@@ -5,7 +5,7 @@ import { ref, uploadBytes } from 'firebase/storage';
 import storage from '../firebase';
 import PlayButton from '../components/Record/PlayButton';
 import MaximumSeconds from '../components/Record/MaximumSeconds';
-import SaveCompelete from '../components/Record/SaveCompelete';
+import SaveComplete from '../components/Record/SaveComplete';
 import styled from 'styled-components';
 
 const Record = () => {
@@ -157,7 +157,7 @@ const Record = () => {
         setButtonClicked={setButtonClicked}
         setIsMessageOn={setIsMessageOn}
       />
-      <SaveCompelete isMessageOn={isMessageOn} setIsMessageOn={setIsMessageOn} />
+      <SaveComplete isMessageOn={isMessageOn} setIsMessageOn={setIsMessageOn} />
     </RecordBlock>
   );
 };

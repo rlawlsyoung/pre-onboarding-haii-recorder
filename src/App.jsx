@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import GlobalStyle from './GrobalStyle';
+import GlobalStyle from './GlobalStyle';
 import Play from './page/Play';
 import Record from './page/Record';
 import Header from './components/Header/Header';
