@@ -2,14 +2,14 @@ import { useEffect } from 'react';
 import { mainColor } from '../../theme';
 import styled from 'styled-components';
 
-const SaveCompelete = ({ isMessageOn, setIsMessageOn }) => {
+const SaveComplete = ({ isMessageOn, setIsMessageOn }) => {
   useEffect(() => {
     isMessageOn && setTimeout(() => setIsMessageOn(false), 2900);
   }, [isMessageOn]);
-  return <SaveCompeleteBlock>{isMessageOn && 'Firebase Storage에 저장되었습니다.'}</SaveCompeleteBlock>;
+  return <SaveCompleteBlock>{isMessageOn && 'Firebase Storage에 저장되었습니다.'}</SaveCompleteBlock>;
 };
 
-const SaveCompeleteBlock = styled.div`
+const SaveCompleteBlock = styled.div`
   position: absolute;
   bottom: 5vh;
   color: ${mainColor};
@@ -17,4 +17,4 @@ const SaveCompeleteBlock = styled.div`
   font-weight: 700;
 `;
 
-export default SaveCompelete;
+export default SaveComplete;

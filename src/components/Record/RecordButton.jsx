@@ -3,43 +3,40 @@ import { FaStop, FaMicrophoneAlt } from 'react-icons/fa';
 import styled from 'styled-components';
 import { mainColor } from '../../theme';
 
-const PlayButton = ({
+const RecordButton = ({
   recOn,
   startRecord,
   stopRecord,
-  startHandler,
+  countHandler,
   stopHandler,
   buttonClicked,
   setButtonClicked,
   setIsMessageOn,
 }) => {
   const [btnDisabled, setBtnDisabled] = useState(false);
-  const clickButton = () => setButtonClicked(!buttonClicked);
+  const handleRecord = () => {
+    setButtonClicked(!buttonClicked);
+    if (recOn) {
+      startRecord();
+      countHandler();
+      setIsMessageOn(false);
+      setBtnDisabled(true);
+      setTimeout(() => setBtnDisabled(false), 3000);
+    } else {
+      stopRecord();
+      stopHandler();
+    }
+  };
   return (
-    <PlayButtonBlock btnDisabled={btnDisabled}>
-      <button
-        disabled={btnDisabled}
-        onClick={() => {
-          clickButton();
-          if (recOn) {
-            startRecord();
-            startHandler();
-            setIsMessageOn(false);
-            setBtnDisabled(true);
-            setTimeout(() => setBtnDisabled(false), 3000);
-          } else {
-            stopRecord();
-            stopHandler();
-          }
-        }}
-      >
-        {buttonClicked ? <FaStop className='icon' alt='stop' /> : <FaMicrophoneAlt className='icon' alt='play' />}
+    <RecordButtonBlock btnDisabled={btnDisabled}>
+      <button disabled={btnDisabled} onClick={handleRecord}>
+        {buttonClicked ? <FaStop className='icon' /> : <FaMicrophoneAlt className='icon' />}
       </button>
-    </PlayButtonBlock>
+    </RecordButtonBlock>
   );
 };
 
-const PlayButtonBlock = styled.div`
+const RecordButtonBlock = styled.div`
   button {
     display: flex;
     align-items: center;
@@ -73,4 +70,4 @@ const PlayButtonBlock = styled.div`
   }
 `;
 
-export default PlayButton;
+export default RecordButton;

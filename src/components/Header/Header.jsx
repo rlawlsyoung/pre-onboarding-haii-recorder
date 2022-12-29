@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectedRecordAtom, recOnAtom, isMessageOnAtom } from '../../atom';
 import styled from 'styled-components';
-import RecordBtn from './RecordBtn';
+import ToRecordBtn from './ToRecordBtn';
 import Logo from './Logo';
 import MenuBtn from './MenuBtn';
 import SideBar from './SideBar';
@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <>
       <StyledHeader>
-        <RecordBtn recOn={recOn} />
+        <ToRecordBtn recOn={recOn} />
         <Logo recOn={recOn} />
         <MenuBtn //
           openSide={openSide}

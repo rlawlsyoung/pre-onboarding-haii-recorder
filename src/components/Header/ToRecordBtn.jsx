@@ -3,7 +3,7 @@ import { FaMicrophoneAlt } from 'react-icons/fa';
 import { mainColor } from '../../Theme';
 import { useNavigate } from 'react-router-dom';
 
-const RecordBtn = ({ recOn }) => {
+const ToRecordBtn = ({ recOn }) => {
   const navigate = useNavigate();
 
   const goHome = () => {
@@ -27,4 +27,4 @@ let Container = styled.div`
   }
 `;
 
-export default RecordBtn;
+export default ToRecordBtn;

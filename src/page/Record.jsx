@@ -1,11 +1,11 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { recOnAtom, isMessageOnAtom } from '../atom';
 import { ref, uploadBytes } from 'firebase/storage';
 import storage from '../firebase';
-import PlayButton from '../components/Record/PlayButton';
+import RecordButton from '../components/Record/RecordButton';
 import MaximumSeconds from '../components/Record/MaximumSeconds';
-import SaveCompelete from '../components/Record/SaveCompelete';
+import SaveComplete from '../components/Record/SaveComplete';
 import styled from 'styled-components';
 
 const Record = () => {
@@ -48,7 +48,7 @@ const Record = () => {
   let minutes = ('0' + today.getMinutes()).slice(-2);
   let seconds = ('0' + today.getSeconds()).slice(-2);
 
-  const startHandler = () => {
+  const countHandler = () => {
     countRef.current = setInterval(() => setCount(c => c + 1), 1000);
   };
 
@@ -147,17 +147,17 @@ const Record = () => {
         </div>
         REC
       </div>
-      <PlayButton
+      <RecordButton
         recOn={recOn}
         startRecord={startRecord}
         stopRecord={stopRecord}
-        startHandler={startHandler}
+        countHandler={countHandler}
         stopHandler={stopHandler}
         buttonClicked={buttonClicked}
         setButtonClicked={setButtonClicked}
         setIsMessageOn={setIsMessageOn}
       />
-      <SaveCompelete isMessageOn={isMessageOn} setIsMessageOn={setIsMessageOn} />
+      <SaveComplete isMessageOn={isMessageOn} setIsMessageOn={setIsMessageOn} />
     </RecordBlock>
   );
 };
