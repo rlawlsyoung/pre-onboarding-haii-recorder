@@ -5,11 +5,6 @@ const selectedRecordAtom = atom({
   default: '',
 });
 
-const recOnAtom = atom({
-  key: 'recOn',
-  default: true,
-});
-
 const isMessageOnAtom = atom({
   key: 'isMessageOnRecord',
   default: false,
@@ -25,4 +20,4 @@ const isPlayingAtom = atom({
   default: false,
 });
 
-export { selectedRecordAtom, recOnAtom, isMessageOnAtom, clickedNameAtom, isPlayingAtom };
+export { selectedRecordAtom, isMessageOnAtom, clickedNameAtom, isPlayingAtom };

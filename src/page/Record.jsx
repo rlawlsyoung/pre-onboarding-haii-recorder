@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { recOnAtom, isMessageOnAtom } from '../atom';
+import { isMessageOnAtom } from '../atom';
 import { ref, uploadBytes } from 'firebase/storage';
 import storage from '../firebase';
 import RecordButton from '../components/Record/RecordButton';
@@ -8,8 +8,7 @@ import MaximumSeconds from '../components/Record/MaximumSeconds';
 import SaveComplete from '../components/Record/SaveComplete';
 import styled from 'styled-components';
 
-const Record = () => {
-  const [recOn, setRecOn] = useRecoilState(recOnAtom);
+const Record = ({ recOn, setRecOn }) => {
   const [isMessageOn, setIsMessageOn] = useRecoilState(isMessageOnAtom);
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
