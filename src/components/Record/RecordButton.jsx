@@ -7,32 +7,29 @@ const RecordButton = ({
   recOn,
   startRecord,
   stopRecord,
-  startHandler,
+  countHandler,
   stopHandler,
   buttonClicked,
   setButtonClicked,
   setIsMessageOn,
 }) => {
   const [btnDisabled, setBtnDisabled] = useState(false);
-  const clickButton = () => setButtonClicked(!buttonClicked);
+  const handleRecord = () => {
+    setButtonClicked(!buttonClicked);
+    if (recOn) {
+      startRecord();
+      countHandler();
+      setIsMessageOn(false);
+      setBtnDisabled(true);
+      setTimeout(() => setBtnDisabled(false), 3000);
+    } else {
+      stopRecord();
+      stopHandler();
+    }
+  };
   return (
     <RecordButtonBlock btnDisabled={btnDisabled}>
-      <button
-        disabled={btnDisabled}
-        onClick={() => {
-          clickButton();
-          if (recOn) {
-            startRecord();
-            startHandler();
-            setIsMessageOn(false);
-            setBtnDisabled(true);
-            setTimeout(() => setBtnDisabled(false), 3000);
-          } else {
-            stopRecord();
-            stopHandler();
-          }
-        }}
-      >
+      <button disabled={btnDisabled} onClick={handleRecord}>
         {buttonClicked ? <FaStop className='icon' /> : <FaMicrophoneAlt className='icon' />}
       </button>
     </RecordButtonBlock>

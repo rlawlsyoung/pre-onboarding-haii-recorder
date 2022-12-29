@@ -48,7 +48,7 @@ const Record = () => {
   let minutes = ('0' + today.getMinutes()).slice(-2);
   let seconds = ('0' + today.getSeconds()).slice(-2);
 
-  const startHandler = () => {
+  const countHandler = () => {
     countRef.current = setInterval(() => setCount(c => c + 1), 1000);
   };
 
@@ -151,7 +151,7 @@ const Record = () => {
         recOn={recOn}
         startRecord={startRecord}
         stopRecord={stopRecord}
-        startHandler={startHandler}
+        countHandler={countHandler}
         stopHandler={stopHandler}
         buttonClicked={buttonClicked}
         setButtonClicked={setButtonClicked}
