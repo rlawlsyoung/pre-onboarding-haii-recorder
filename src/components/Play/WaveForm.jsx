@@ -11,18 +11,18 @@ const WaveForm = () => {
   const selectedRecord = useRecoilValue(selectedRecordAtom);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingAtom);
 
-  const waveformRef = useRef();
-  const wavesurfer = useRef(null);
+  const waveFormRef = useRef();
+  const waveSurfer = useRef(null);
 
   const handlePlay = () => {
-    setIsPlaying(!isPlaying);
-    wavesurfer.current.playPause();
+    setIsPlaying(!waveSurfer.current.isPlaying());
+    waveSurfer.current.playPause();
   };
 
   useEffect(() => {
-    if (waveformRef.current) {
-      wavesurfer.current = WaveSurfer.create({
-        container: waveformRef.current,
+    if (waveFormRef.current) {
+      waveSurfer.current = WaveSurfer.create({
+        container: waveFormRef.current,
         barWidth: 3,
         barRadius: 3,
         barGap: 2,
@@ -35,15 +35,19 @@ const WaveForm = () => {
         waveColor: '#C4C4C4',
         cursorColor: 'transparent',
       });
-      wavesurfer.current.load(selectedRecord);
+      waveSurfer.current.load(selectedRecord);
+      waveSurfer.current.on('finish', () => {
+        setIsPlaying(false);
+      });
     }
-    return () => wavesurfer.current.destroy();
+
+    return () => waveSurfer.current.destroy();
   }, [selectedRecord]);
 
   return (
     <WaveformContainer>
-      <Wave id='waveform' ref={waveformRef} />
-      <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} />
+      <Wave id='waveform' ref={waveFormRef} />
+      <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} waveSurfer={waveSurfer} />
     </WaveformContainer>
   );
 };

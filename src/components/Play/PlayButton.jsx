@@ -1,12 +1,12 @@
-import { FaPlay, FaStop } from 'react-icons/fa';
+import { FaPlay, FaPause } from 'react-icons/fa';
 import styled from 'styled-components';
 
 import { mainColor } from '../../theme';
 
-const PlayButton = ({ isPlaying, handlePlay }) => {
+const PlayButton = ({ isPlaying, handlePlay, waveSurfer }) => {
   return (
     <PlayButtonContainer onClick={handlePlay}>
-      {isPlaying ? <FaStop className='stop' /> : <FaPlay className='play' />}
+      {isPlaying ? <FaPause className='stop' /> : <FaPlay className='play' />}
     </PlayButtonContainer>
   );
 };
