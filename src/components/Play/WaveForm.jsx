@@ -22,6 +22,10 @@ const WaveForm = () => {
     console.log(waveSurfer.current);
   };
 
+  const handleOnClick = () => {
+    setCurrentTime(waveSurfer.current.getCurrentTime().toFixed());
+  };
+
   useEffect(() => {
     if (waveFormRef.current) {
       waveSurfer.current = WaveSurfer.create({
@@ -60,7 +64,6 @@ const WaveForm = () => {
       parseInt((seconds % 3600) / 60) < 10 ? '0' + parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60);
     var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60;
 
-    //연산한 값을 화면에 뿌려주는 코드
     return min + ':' + sec;
   };
 
@@ -68,7 +71,7 @@ const WaveForm = () => {
     <WaveformContainer>
       <p className='wave-form-wrapper flex-center'>
         {toMMSS(currentTime)}
-        <div className='wave-form' ref={waveFormRef} />
+        <div className='wave-form' ref={waveFormRef} onClick={handleOnClick} />
         {toMMSS(fullTime)}
       </p>
       <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} waveSurfer={waveSurfer} />

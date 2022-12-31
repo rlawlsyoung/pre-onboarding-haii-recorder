@@ -1,18 +1,22 @@
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { selectedRecordAtom, clickedNameAtom } from '../../atom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { clickedNameAtom, isPlayingAtom } from '../../atom';
 import styled from 'styled-components';
 import logo from '../../assets/img/Header/haii_logo.png';
 
 const Logo = ({ recOn }) => {
-  const setSelectedRecord = useSetRecoilState(selectedRecordAtom);
-  const setClickedName = useSetRecoilState(clickedNameAtom);
+  const clickedName = useRecoilValue(clickedNameAtom);
+  const setIsPlaying = useSetRecoilState(isPlayingAtom);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const goHome = () => {
-    recOn && navigate('/');
-    setClickedName('');
-    setSelectedRecord('');
+    if (location.pathname === '/record') {
+      setIsPlaying(false);
+    }
+    if (clickedName) {
+      recOn && navigate(`/${clickedName}`);
+    } else recOn && navigate('/');
   };
 
   return (

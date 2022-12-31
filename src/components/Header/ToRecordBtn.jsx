@@ -10,6 +10,7 @@ const ToRecordBtn = ({ recOn }) => {
   const goHome = () => {
     recOn && navigate('/record');
   };
+
   return (
     <Container recOn={recOn} onClick={goHome}>
       <FaMicrophoneAlt className='record-icon' alt='go to record' />
