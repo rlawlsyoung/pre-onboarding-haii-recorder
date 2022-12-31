@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { mainColor } from '../../theme';
 
-const PlayButton = ({ isPlaying, handlePlay, waveSurfer }) => {
+const PlayButton = ({ isPlaying, handlePlay }) => {
   return (
     <PlayButtonContainer onClick={handlePlay}>
       {isPlaying ? <FaPause className='stop' /> : <FaPlay className='play' />}

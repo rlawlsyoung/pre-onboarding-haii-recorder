@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedRecordAtom, isPlayingAtom } from '../../atom';
 import styled from 'styled-components';
@@ -10,6 +10,8 @@ import { mainColor } from '../../theme';
 const WaveForm = () => {
   const selectedRecord = useRecoilValue(selectedRecordAtom);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingAtom);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [fullTime, setFullTime] = useState(0);
 
   const waveFormRef = useRef();
   const waveSurfer = useRef(null);
@@ -17,6 +19,7 @@ const WaveForm = () => {
   const handlePlay = () => {
     setIsPlaying(!waveSurfer.current.isPlaying());
     waveSurfer.current.playPause();
+    console.log(waveSurfer.current);
   };
 
   useEffect(() => {
@@ -39,13 +42,35 @@ const WaveForm = () => {
       waveSurfer.current.on('finish', () => {
         setIsPlaying(false);
       });
+      waveSurfer.current.on('audioprocess', () => {
+        setCurrentTime(waveSurfer.current.getCurrentTime().toFixed());
+      });
+      waveSurfer.current.on('ready', () => {
+        setFullTime(waveSurfer.current.getDuration().toFixed());
+        setCurrentTime(0);
+      });
     }
+
+    Number.prototype.toMMSS = function () {
+      var seconds = Math.floor(this);
+      var minutes = Math.floor(seconds / 60);
+      seconds -= minutes * 60; /*from  w  w w  .  j av a 2  s  . c o m*/
+
+      if (minutes < 10) {
+        minutes = '0' + minutes;
+      }
+      if (seconds < 10) {
+        seconds = '0' + seconds;
+      }
+      return minutes + ':' + seconds;
+    };
 
     return () => waveSurfer.current.destroy();
   }, [selectedRecord]);
 
   return (
     <WaveformContainer>
+      {Number(currentTime)} / {fullTime}
       <Wave id='waveform' ref={waveFormRef} />
       <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} waveSurfer={waveSurfer} />
     </WaveformContainer>
