@@ -1,4 +1,4 @@
-import { FaPlay, FaStop } from 'react-icons/fa';
+import { FaPlay, FaPause } from 'react-icons/fa';
 import styled from 'styled-components';
 
 import { mainColor } from '../../theme';
@@ -6,7 +6,7 @@ import { mainColor } from '../../theme';
 const PlayButton = ({ isPlaying, handlePlay }) => {
   return (
     <PlayButtonContainer onClick={handlePlay}>
-      {isPlaying ? <FaStop className='stop' /> : <FaPlay className='play' />}
+      {isPlaying ? <FaPause className='stop' /> : <FaPlay className='play' />}
     </PlayButtonContainer>
   );
 };

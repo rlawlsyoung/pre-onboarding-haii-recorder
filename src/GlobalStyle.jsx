@@ -20,6 +20,12 @@ const GlobalStyle = createGlobalStyle`
     min-width:375px;
     font-family: 'Noto Sans KR', sans-serif;
   }
+
+  .flex-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export default GlobalStyle;

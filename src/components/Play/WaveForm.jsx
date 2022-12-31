@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedRecordAtom, isPlayingAtom } from '../../atom';
 import styled from 'styled-components';
@@ -10,22 +10,30 @@ import { mainColor } from '../../theme';
 const WaveForm = () => {
   const selectedRecord = useRecoilValue(selectedRecordAtom);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingAtom);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [fullTime, setFullTime] = useState(0);
 
-  const waveformRef = useRef();
-  const wavesurfer = useRef(null);
+  const waveFormRef = useRef();
+  const waveSurfer = useRef(null);
 
   const handlePlay = () => {
-    setIsPlaying(!isPlaying);
-    wavesurfer.current.playPause();
+    setIsPlaying(!waveSurfer.current.isPlaying());
+    waveSurfer.current.playPause();
+    console.log(waveSurfer.current);
+  };
+
+  const handleOnClick = () => {
+    setCurrentTime(waveSurfer.current.getCurrentTime().toFixed());
   };
 
   useEffect(() => {
-    if (waveformRef.current) {
-      wavesurfer.current = WaveSurfer.create({
-        container: waveformRef.current,
+    if (waveFormRef.current) {
+      waveSurfer.current = WaveSurfer.create({
+        container: waveFormRef.current,
         barWidth: 3,
         barRadius: 3,
         barGap: 2,
+        hideScrollbar: true,
         barMinHeight: 1,
         cursorWidth: 1,
         backend: 'WebAudio',
@@ -35,15 +43,38 @@ const WaveForm = () => {
         waveColor: '#C4C4C4',
         cursorColor: 'transparent',
       });
-      wavesurfer.current.load(selectedRecord);
+      waveSurfer.current.load(selectedRecord);
+      waveSurfer.current.on('finish', () => {
+        setIsPlaying(false);
+      });
+      waveSurfer.current.on('audioprocess', () => {
+        setCurrentTime(waveSurfer.current.getCurrentTime().toFixed());
+      });
+      waveSurfer.current.on('ready', () => {
+        setFullTime(waveSurfer.current.getDuration().toFixed());
+        setCurrentTime(0);
+      });
     }
-    return () => wavesurfer.current.destroy();
+
+    return () => waveSurfer.current.destroy();
   }, [selectedRecord]);
+
+  const toMMSS = seconds => {
+    var min =
+      parseInt((seconds % 3600) / 60) < 10 ? '0' + parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60);
+    var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60;
+
+    return min + ':' + sec;
+  };
 
   return (
     <WaveformContainer>
-      <Wave id='waveform' ref={waveformRef} />
-      <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} />
+      <p className='wave-form-wrapper flex-center'>
+        {toMMSS(currentTime)}
+        <div className='wave-form' ref={waveFormRef} onClick={handleOnClick} />
+        {toMMSS(fullTime)}
+      </p>
+      <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} waveSurfer={waveSurfer} />
     </WaveformContainer>
   );
 };
@@ -57,14 +88,19 @@ const WaveformContainer = styled.div`
   padding: 0 25px;
   background: transparent;
 
-  div {
-    font-size: 30px;
-  }
-`;
+  .wave-form-wrapper {
+    width: 100%;
+    margin-bottom: 25px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    font-weight: 700;
 
-const Wave = styled.div`
-  width: 100%;
-  margin: 25px 0;
+    .wave-form {
+      font-size: 30px;
+      width: 100%;
+      margin: 10px;
+    }
+  }
 `;
 
 export default WaveForm;
