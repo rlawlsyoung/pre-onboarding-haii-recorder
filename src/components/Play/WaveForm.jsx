@@ -29,6 +29,7 @@ const WaveForm = () => {
         barWidth: 3,
         barRadius: 3,
         barGap: 2,
+        hideScrollbar: true,
         barMinHeight: 1,
         cursorWidth: 1,
         backend: 'WebAudio',
@@ -51,27 +52,25 @@ const WaveForm = () => {
       });
     }
 
-    Number.prototype.toMMSS = function () {
-      var seconds = Math.floor(this);
-      var minutes = Math.floor(seconds / 60);
-      seconds -= minutes * 60; /*from  w  w w  .  j av a 2  s  . c o m*/
-
-      if (minutes < 10) {
-        minutes = '0' + minutes;
-      }
-      if (seconds < 10) {
-        seconds = '0' + seconds;
-      }
-      return minutes + ':' + seconds;
-    };
-
     return () => waveSurfer.current.destroy();
   }, [selectedRecord]);
 
+  const toMMSS = seconds => {
+    var min =
+      parseInt((seconds % 3600) / 60) < 10 ? '0' + parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60);
+    var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60;
+
+    //연산한 값을 화면에 뿌려주는 코드
+    return min + ':' + sec;
+  };
+
   return (
     <WaveformContainer>
-      {Number(currentTime)} / {fullTime}
-      <Wave id='waveform' ref={waveFormRef} />
+      <p className='wave-form-wrapper flex-center'>
+        {toMMSS(currentTime)}
+        <div className='wave-form' ref={waveFormRef} />
+        {toMMSS(fullTime)}
+      </p>
       <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} waveSurfer={waveSurfer} />
     </WaveformContainer>
   );
@@ -86,14 +85,19 @@ const WaveformContainer = styled.div`
   padding: 0 25px;
   background: transparent;
 
-  div {
-    font-size: 30px;
-  }
-`;
+  .wave-form-wrapper {
+    width: 100%;
+    margin-bottom: 25px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    font-weight: 700;
 
-const Wave = styled.div`
-  width: 100%;
-  margin: 25px 0;
+    .wave-form {
+      font-size: 30px;
+      width: 100%;
+      margin: 10px;
+    }
+  }
 `;
 
 export default WaveForm;

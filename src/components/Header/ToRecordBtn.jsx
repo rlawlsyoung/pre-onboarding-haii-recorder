@@ -1,7 +1,8 @@
-import styled from 'styled-components';
-import { FaMicrophoneAlt } from 'react-icons/fa';
-import { mainColor } from '../../Theme';
 import { useNavigate } from 'react-router-dom';
+import { FaMicrophoneAlt } from 'react-icons/fa';
+import styled from 'styled-components';
+
+import { mainColor } from '../../Theme';
 
 const ToRecordBtn = ({ recOn }) => {
   const navigate = useNavigate();
