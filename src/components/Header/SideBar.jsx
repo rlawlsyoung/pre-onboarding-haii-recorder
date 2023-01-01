@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { clickedNameAtom, isPlayingAtom } from '../../atom';
-import { FaTrashAlt, FaPlay } from 'react-icons/fa';
 import styled from 'styled-components';
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage';
 import storage from '../../firebase';
+import AudioBar from './AudioBar';
 
 import { mainColor } from '../../theme';
 
@@ -64,24 +64,14 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
           <ul className='side-body'>
             {audioList.map((list, index) => {
               return (
-                <StyledLi key={list.name} clickedName={clickedName} listName={list.name}>
-                  <div className='date-name'>
-                    <span className='date'>{list.name.split('|')[0]}</span>
-                    <span>{list.name.split('|')[1]}</span>
-                  </div>
-                  {clickedName === list.name ? (
-                    <div className='playing'>재생 중</div>
-                  ) : (
-                    <div className='btn-box'>
-                      <span value={index} id={list.name} onClick={handlePlay}>
-                        <FaPlay />
-                      </span>
-                      <span value={index} id={list.name} onClick={handleRemove}>
-                        <FaTrashAlt />
-                      </span>
-                    </div>
-                  )}
-                </StyledLi>
+                <AudioBar
+                  key={list.name}
+                  index={index}
+                  clickedName={clickedName}
+                  listName={list.name}
+                  handlePlay={handlePlay}
+                  handleRemove={handleRemove}
+                />
               );
             })}
           </ul>
@@ -145,20 +135,5 @@ const StyledSideBar = styled.div`
     span {
       margin: 4px 0;
     }
-  }
-`;
-
-const StyledLi = styled.li`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  height: 75px;
-  padding: 0 10px;
-  background-color: ${({ clickedName, listName }) => clickedName == listName && '#efefef'};
-  font-size: 130%;
-  text-align: center;
-  transition: box-shadow 0.3s;
-  &:hover {
-    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   }
 `;

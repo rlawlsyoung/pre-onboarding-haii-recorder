@@ -1,0 +1,44 @@
+import React from 'react';
+import { Dialog } from '@mui/material';
+import { FaTrashAlt, FaPlay } from 'react-icons/fa';
+import styled from 'styled-components';
+
+const AudioBar = ({ index, clickedName, listName, handlePlay, handleRemove }) => {
+  return (
+    <StyledAudioBar clickedName={clickedName} listName={listName}>
+      <div className='date-name'>
+        <span className='date'>{listName.split('|')[0]}</span>
+        <span>{listName.split('|')[1]}</span>
+      </div>
+      {clickedName === listName ? (
+        <div className='playing'>재생 중</div>
+      ) : (
+        <div className='btn-box'>
+          <span value={index} id={listName} onClick={handlePlay}>
+            <FaPlay />
+          </span>
+          <span value={index} id={listName} onClick={handleRemove}>
+            <FaTrashAlt />
+          </span>
+        </div>
+      )}
+    </StyledAudioBar>
+  );
+};
+
+const StyledAudioBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 75px;
+  padding: 0 10px;
+  background-color: ${({ clickedName, listName }) => clickedName == listName && '#efefef'};
+  font-size: 130%;
+  text-align: center;
+  transition: box-shadow 0.3s;
+  &:hover {
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  }
+`;
+
+export default AudioBar;
