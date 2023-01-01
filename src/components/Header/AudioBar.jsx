@@ -3,7 +3,7 @@ import { Dialog } from '@mui/material';
 import { FaTrashAlt, FaPlay } from 'react-icons/fa';
 import styled from 'styled-components';
 
-const AudioBar = ({ index, clickedName, listName, handlePlay, handleRemove }) => {
+const AudioBar = ({ index, clickedName, listName, isEditing, handlePlay, handleRemove }) => {
   return (
     <StyledAudioBar clickedName={clickedName} listName={listName}>
       <div className='date-name'>
@@ -17,9 +17,11 @@ const AudioBar = ({ index, clickedName, listName, handlePlay, handleRemove }) =>
           <span value={index} id={listName} onClick={handlePlay}>
             <FaPlay />
           </span>
-          <span value={index} id={listName} onClick={handleRemove}>
-            <FaTrashAlt />
-          </span>
+          {isEditing && (
+            <span value={index} id={listName} onClick={handleRemove}>
+              <FaTrashAlt />
+            </span>
+          )}
         </div>
       )}
     </StyledAudioBar>
@@ -36,8 +38,24 @@ const StyledAudioBar = styled.div`
   font-size: 130%;
   text-align: center;
   transition: box-shadow 0.3s;
+
   &:hover {
     box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  }
+
+  .btn-box {
+    width: 100px;
+    span {
+      margin: 0 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+  .playing {
+    width: 70px;
+    margin: 0 15px;
+    font-size: 20px;
+    font-weight: 700;
   }
 `;
 

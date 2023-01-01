@@ -16,6 +16,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
 
   const [renderCheck, setRenderCheck] = useState(true);
   const [audioList, setAudioList] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
   const audioRef = ref(storage, `audio`);
 
   useEffect(() => {
@@ -56,11 +57,23 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
     }
   };
 
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
   return (
     <>
       {audioList && (
         <StyledSideBar openSide={openSide}>
-          <div className='side-head'>녹음 리스트</div>
+          <div className='side-head flex-center'>
+            <div className='side-wrapper'>
+              <p className='edit' onClick={handleEdit}>
+                {isEditing ? '완료' : '편집'}
+              </p>
+              <p className='side-title'>녹음 리스트</p>
+              <p className='dummy' />
+            </div>
+          </div>
           <ul className='side-body'>
             {audioList.map((list, index) => {
               return (
@@ -69,6 +82,7 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
                   index={index}
                   clickedName={clickedName}
                   listName={list.name}
+                  isEditing={isEditing}
                   handlePlay={handlePlay}
                   handleRemove={handleRemove}
                 />
@@ -80,8 +94,6 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
     </>
   );
 };
-
-export default SideBar;
 
 const StyledSideBar = styled.div`
   display: flex;
@@ -96,30 +108,31 @@ const StyledSideBar = styled.div`
   transition: 0.3s;
   transform: translateX(${({ openSide }) => (openSide ? '-100%' : '0%')});
   z-index: 20;
+
   .side-head {
     width: 100%;
     height: 60px;
     background-color: ${mainColor};
     line-height: 60px;
     font-size: 160%;
+    font-weight: 700;
     text-align: center;
     color: white;
-  }
-  .side-body {
-    .btn-box {
-      span {
-        margin-left: 30px;
+
+    .side-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 738px;
+      margin: 15px;
+
+      .edit {
         font-size: 20px;
         cursor: pointer;
       }
     }
-    .playing {
-      width: 70px;
-      margin-left: 30px;
-      font-size: 20px;
-      font-weight: 700;
-    }
   }
+
   ul {
     overflow-y: auto;
   }
@@ -129,11 +142,15 @@ const StyledSideBar = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     .date {
       font-weight: 700;
     }
+
     span {
       margin: 4px 0;
     }
   }
 `;
+
+export default SideBar;
