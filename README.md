@@ -1,7 +1,7 @@
 # 플레이키보드 프리온보딩 프론트 4팀
 
-안녕하세요! 프론트 4팀입니다. 저희는 프론트엔드 3명으로 구성되어있습니다. <br/>
-주식회사 HAII와의 인턴십 과제인 녹음기 만들기입니다.
+안녕하세요! 프론트 4팀입니다. 저희는 프론트엔드 3명으로 구성되어있습니다. <br/> <br/>
+주식회사 HAII와의 인턴십 과제인 녹음기 만들기입니다. <br/>
 저희는 파이어베이스를 통해 Storage에 녹음본 저장 및 불러오기를 할 수 있도록 구현하여 모두와 공유할 수 있는 녹음기를 만들었습니다.
 
 ### 역할 분담
@@ -18,7 +18,7 @@ https://www.notion.so/aae6c129b9c448c0a0ded1c5fb783437?p=5ab94e6c8ddc4cf98493fe2
 
 ## 사용한 기술 및 라이브러리
 
-- Front-end : `React.js` `styled component`, `FireBase`, `MUI`, `React-Router-Dom`, `wavesurfer-react`,`react-icons`
+- Front-end : `React.js` `styled component`, `FireBase`, `Recoil`, `MUI`, `React-Router-Dom`, `wavesurfer-react`,`react-icons`
 
 ## 후기
 
@@ -33,6 +33,7 @@ https://www.notion.so/aae6c129b9c448c0a0ded1c5fb783437?p=5ab94e6c8ddc4cf98493fe2
   - **파이어베이스 업로드 :** 녹음이 끝나면 자동으로 파이어베이스 Storage에 업로드 되도록 구현했습니다.
   - **재생 페이지 수정 :** 재생 페이지에 총 재생시간 및 현재 재생시간을 표기하고 각종 버그를 수정했습니다.
   - **사이드바 수정 :** 사이드바에 편집 토글 버튼을 넣어 편집 버튼을 눌렀을 때만 오디오 파일을 삭제할 수 있도록 했습니다.
+  - **Recoil 사용**: Recoil을 통해 전체적으로 전역 상태관리를 할 수 있도록 수정했습니다.
   - **자세한건 [블로그 게시글](https://velog.io/@jinyoung985/Portfolio-%EC%98%A4%EB%94%94%EC%98%A4-%EB%85%B9%EC%9D%8C-%EC%9E%AC%EC%83%9D-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EB%A7%8C%EB%93%A4%EA%B8%B0)에 정리해두었습니다.**
     <br/>
 
