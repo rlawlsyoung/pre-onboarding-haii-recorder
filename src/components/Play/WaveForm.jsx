@@ -22,10 +22,6 @@ const WaveForm = () => {
     console.log(waveSurfer.current);
   };
 
-  const handleOnClick = () => {
-    setCurrentTime(waveSurfer.current.getCurrentTime().toFixed());
-  };
-
   useEffect(() => {
     if (waveFormRef.current) {
       waveSurfer.current = WaveSurfer.create({
@@ -71,7 +67,7 @@ const WaveForm = () => {
     <WaveformContainer>
       <p className='wave-form-wrapper flex-center'>
         {toMMSS(currentTime)}
-        <div className='wave-form' ref={waveFormRef} onClick={handleOnClick} />
+        <div className='wave-form' ref={waveFormRef} />
         {toMMSS(fullTime)}
       </p>
       <PlayButton isPlaying={isPlaying} handlePlay={handlePlay} waveSurfer={waveSurfer} />
