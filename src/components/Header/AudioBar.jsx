@@ -31,7 +31,7 @@ const AudioBar = ({ index, clickedName, listName, isEditing, handlePlay, handleR
 const StyledAudioBar = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   height: 75px;
   padding: 0 10px;
   background-color: ${({ clickedName, listName }) => clickedName == listName && '#efefef'};
@@ -41,6 +41,22 @@ const StyledAudioBar = styled.div`
 
   &:hover {
     box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  }
+
+  .date-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+
+    .date {
+      font-weight: 700;
+    }
+
+    span {
+      margin: 4px 0;
+    }
   }
 
   .btn-box {

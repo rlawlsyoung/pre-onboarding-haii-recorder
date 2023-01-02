@@ -130,26 +130,15 @@ const StyledSideBar = styled.div`
         font-size: 20px;
         cursor: pointer;
       }
+
+      .dummy {
+        width: 40px;
+      }
     }
   }
 
   ul {
     overflow-y: auto;
-  }
-
-  .date-name {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .date {
-      font-weight: 700;
-    }
-
-    span {
-      margin: 4px 0;
-    }
   }
 `;
 
