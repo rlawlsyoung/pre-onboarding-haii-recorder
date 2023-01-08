@@ -57,8 +57,8 @@ const Record = ({ recOn, setRecOn }) => {
     setCount(0);
   };
 
-  Number.prototype.toHHMMSS = function () {
-    let myNum = parseInt(this, 10);
+  const toHHMMSS = hour => {
+    let myNum = parseInt(hour, 10);
     let hours = Math.floor(myNum / 3600);
     let minutes = Math.floor((myNum - hours * 3600) / 60);
     let seconds = myNum - hours * 3600 - minutes * 60;
@@ -79,12 +79,12 @@ const Record = ({ recOn, setRecOn }) => {
     const analyser = audioCtx.createScriptProcessor(0, 1, 1);
     setAnalyser(analyser);
 
-    function makeSound(stream) {
+    const makeSound = stream => {
       const source = audioCtx.createMediaStreamSource(stream);
       setSource(source);
       source.connect(analyser);
       analyser.connect(audioCtx.destination);
-    }
+    };
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
@@ -92,9 +92,9 @@ const Record = ({ recOn, setRecOn }) => {
       setMedia(mediaRecorder);
       makeSound(stream);
 
-      analyser.onaudioprocess = function (e) {
+      analyser.onaudioprocess = e => {
         if (e.playbackTime > maxSeconds + 0.9) {
-          stream.getAudioTracks().forEach(function (track) {
+          stream.getAudioTracks().forEach(track => {
             track.stop();
             stopHandler();
             setButtonClicked(false);
@@ -103,7 +103,7 @@ const Record = ({ recOn, setRecOn }) => {
           analyser.disconnect();
           audioCtx.createMediaStreamSource(stream).disconnect();
 
-          mediaRecorder.ondataavailable = function (e) {
+          mediaRecorder.ondataavailable = e => {
             setAudioUrl(e.data);
             setRecOn(true);
           };
@@ -115,11 +115,11 @@ const Record = ({ recOn, setRecOn }) => {
   };
 
   const stopRecord = () => {
-    media.ondataavailable = function (e) {
+    media.ondataavailable = e => {
       setAudioUrl(e.data);
       setRecOn(true);
     };
-    stream.getAudioTracks().forEach(function (track) {
+    stream.getAudioTracks().forEach(track => {
       track.stop();
     });
 
@@ -138,7 +138,7 @@ const Record = ({ recOn, setRecOn }) => {
 
   return (
     <RecordBlock recOn={recOn}>
-      <p className='timer'>{count.toHHMMSS()}</p>
+      <p className='timer'>{toHHMMSS(count)}</p>
       <MaximumSeconds recOn={recOn} maxSeconds={maxSeconds} setMaxSeconds={setMaxSeconds} />
       <div className='recording-alert'>
         <div className='recording-light'>
