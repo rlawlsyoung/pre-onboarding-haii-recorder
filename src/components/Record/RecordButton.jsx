@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaStop, FaMicrophoneAlt } from 'react-icons/fa';
 import styled from 'styled-components';
+
 import { mainColor } from '../../theme';
 
 const RecordButton = ({

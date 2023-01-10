@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedRecordAtom, isPlayingAtom } from '../../atom';
-import styled from 'styled-components';
 import WaveSurfer from 'wavesurfer.js';
+import styled from 'styled-components';
 import PlayButton from './PlayButton';
 
 import { mainColor } from '../../theme';
@@ -19,7 +19,6 @@ const WaveForm = () => {
   const handlePlay = () => {
     setIsPlaying(!waveSurfer.current.isPlaying());
     waveSurfer.current.playPause();
-    console.log(waveSurfer.current);
   };
 
   useEffect(() => {

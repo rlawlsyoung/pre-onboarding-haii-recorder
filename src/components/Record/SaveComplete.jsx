@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { mainColor } from '../../theme';
 import styled from 'styled-components';
+
+import { mainColor } from '../../theme';
 
 const SaveComplete = ({ isMessageOn, setIsMessageOn }) => {
   useEffect(() => {
