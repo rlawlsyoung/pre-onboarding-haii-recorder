@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { FaStop, FaMicrophoneAlt } from 'react-icons/fa';
 import styled from 'styled-components';
+
 import { mainColor } from '../../theme';
 
 const RecordButton = ({
@@ -14,6 +15,7 @@ const RecordButton = ({
   setIsMessageOn,
 }) => {
   const [btnDisabled, setBtnDisabled] = useState(false);
+
   const handleRecord = () => {
     setButtonClicked(!buttonClicked);
     if (recOn) {
@@ -27,6 +29,7 @@ const RecordButton = ({
       stopHandler();
     }
   };
+
   return (
     <RecordButtonBlock btnDisabled={btnDisabled}>
       <button disabled={btnDisabled} onClick={handleRecord}>

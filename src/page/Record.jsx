@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { isMessageOnAtom } from '../atom';
 import { ref, uploadBytes } from 'firebase/storage';
@@ -31,14 +31,6 @@ const Record = ({ recOn, setRecOn }) => {
     if (audio) uploadAudio();
   }, [audio]);
 
-  const uploadAudio = () => {
-    if (audio == null) return;
-    const audioRef = ref(storage, `audio/${audio.name}`);
-    uploadBytes(audioRef, audio).then(() => {
-      setIsMessageOn(true);
-    });
-  };
-
   let today = new Date();
   let year = today.getFullYear();
   let month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -47,18 +39,26 @@ const Record = ({ recOn, setRecOn }) => {
   let minutes = ('0' + today.getMinutes()).slice(-2);
   let seconds = ('0' + today.getSeconds()).slice(-2);
 
-  const countHandler = () => {
-    countRef.current = setInterval(() => setCount(c => c + 1), 1000);
-  };
+  const uploadAudio = useCallback(() => {
+    if (audio == null) return;
+    const audioRef = ref(storage, `audio/${audio.name}`);
+    uploadBytes(audioRef, audio).then(() => {
+      setIsMessageOn(true);
+    });
+  }, [audio]);
 
-  const stopHandler = () => {
+  const countHandler = useCallback(() => {
+    countRef.current = setInterval(() => setCount(c => c + 1), 1000);
+  }, []);
+
+  const stopHandler = useCallback(() => {
     clearInterval(countRef.current);
     countRef.current = null;
     setCount(0);
-  };
+  }, []);
 
-  Number.prototype.toHHMMSS = function () {
-    let myNum = parseInt(this, 10);
+  const toHHMMSS = useCallback(hour => {
+    let myNum = parseInt(hour, 10);
     let hours = Math.floor(myNum / 3600);
     let minutes = Math.floor((myNum - hours * 3600) / 60);
     let seconds = myNum - hours * 3600 - minutes * 60;
@@ -72,19 +72,19 @@ const Record = ({ recOn, setRecOn }) => {
       seconds = '0' + seconds;
     }
     return hours + ':' + minutes + ':' + seconds;
-  };
+  }, []);
 
-  const startRecord = () => {
+  const startRecord = useCallback(() => {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const analyser = audioCtx.createScriptProcessor(0, 1, 1);
     setAnalyser(analyser);
 
-    function makeSound(stream) {
+    const makeSound = stream => {
       const source = audioCtx.createMediaStreamSource(stream);
       setSource(source);
       source.connect(analyser);
       analyser.connect(audioCtx.destination);
-    }
+    };
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
@@ -92,9 +92,9 @@ const Record = ({ recOn, setRecOn }) => {
       setMedia(mediaRecorder);
       makeSound(stream);
 
-      analyser.onaudioprocess = function (e) {
+      analyser.onaudioprocess = e => {
         if (e.playbackTime > maxSeconds + 0.9) {
-          stream.getAudioTracks().forEach(function (track) {
+          stream.getAudioTracks().forEach(track => {
             track.stop();
             stopHandler();
             setButtonClicked(false);
@@ -103,7 +103,7 @@ const Record = ({ recOn, setRecOn }) => {
           analyser.disconnect();
           audioCtx.createMediaStreamSource(stream).disconnect();
 
-          mediaRecorder.ondataavailable = function (e) {
+          mediaRecorder.ondataavailable = e => {
             setAudioUrl(e.data);
             setRecOn(true);
           };
@@ -112,21 +112,21 @@ const Record = ({ recOn, setRecOn }) => {
         }
       };
     });
-  };
+  }, [maxSeconds]);
 
-  const stopRecord = () => {
-    media.ondataavailable = function (e) {
+  const stopRecord = useCallback(() => {
+    media.ondataavailable = e => {
       setAudioUrl(e.data);
       setRecOn(true);
     };
-    stream.getAudioTracks().forEach(function (track) {
+    stream.getAudioTracks().forEach(track => {
       track.stop();
     });
 
     media.stop();
     analyser.disconnect();
     source.disconnect();
-  };
+  }, [media, stream, analyser, source]);
 
   const onSubmitAudioFile = useCallback(() => {
     const sound = new File([audioUrl], `${year}-${month}-${date} | ${hours}:${minutes}:${seconds}.mp3`, {
@@ -138,7 +138,7 @@ const Record = ({ recOn, setRecOn }) => {
 
   return (
     <RecordBlock recOn={recOn}>
-      <p className='timer'>{count.toHHMMSS()}</p>
+      <p className='timer'>{toHHMMSS(count)}</p>
       <MaximumSeconds recOn={recOn} maxSeconds={maxSeconds} setMaxSeconds={setMaxSeconds} />
       <div className='recording-alert'>
         <div className='recording-light'>

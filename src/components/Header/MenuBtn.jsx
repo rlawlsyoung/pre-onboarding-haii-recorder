@@ -1,14 +1,15 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import styled from 'styled-components';
+
 import { mainColor } from '../../Theme';
 
 const MenuBtn = ({ openSide, setOpenSide, recOn }) => {
   const clickRef = useRef();
-  const BtnChange = () => {
+  const BtnChange = useCallback(() => {
     if (recOn) {
       setOpenSide(!openSide);
     }
-  };
+  }, [openSide, recOn]);
   return (
     <Container className={openSide && 'change'} onClick={BtnChange} ref={clickRef} recOn={recOn}>
       <div className='bar1'></div>

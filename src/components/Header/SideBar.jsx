@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { clickedNameAtom, isPlayingAtom } from '../../atom';
@@ -35,10 +35,9 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
     setOpenSide(false);
   }, [selectedRecord]);
 
-  const handlePlay = async e => {
+  const handlePlay = useCallback(async e => {
     setClickedName(e.currentTarget.id);
     setIsPlaying(false);
-    navigate(`/${clickedName}`);
     setOpenSide(false);
     try {
       const url = await getDownloadURL(ref(storage, `audio/${(storage, e.currentTarget.id)}`));
@@ -46,20 +45,23 @@ const SideBar = ({ selectedRecord, setSelectedRecord, openSide, setOpenSide, isM
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
-  const handleRemove = async e => {
-    const removeRef = ref(storage, `audio/${e.currentTarget.id}`);
-    try {
-      await deleteObject(removeRef).then(() => setRenderCheck(!renderCheck));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleRemove = useCallback(
+    async e => {
+      const removeRef = ref(storage, `audio/${e.currentTarget.id}`);
+      try {
+        await deleteObject(removeRef).then(() => setRenderCheck(!renderCheck));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [renderCheck]
+  );
 
-  const handleEdit = () => {
+  const handleEdit = useCallback(() => {
     setIsEditing(!isEditing);
-  };
+  }, [isEditing]);
 
   return (
     <>

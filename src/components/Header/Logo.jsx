@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { clickedNameAtom, isPlayingAtom } from '../../atom';
@@ -10,14 +11,14 @@ const Logo = ({ recOn }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const goHome = () => {
+  const goHome = useCallback(() => {
     if (location.pathname === '/record') {
       setIsPlaying(false);
     }
     if (clickedName) {
       recOn && navigate(`/${clickedName}`);
     } else recOn && navigate('/');
-  };
+  }, [clickedName, recOn]);
 
   return (
     <Container recOn={recOn}>

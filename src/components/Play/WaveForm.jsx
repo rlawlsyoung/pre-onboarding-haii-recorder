@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { selectedRecordAtom, isPlayingAtom } from '../../atom';
-import styled from 'styled-components';
 import WaveSurfer from 'wavesurfer.js';
+import styled from 'styled-components';
 import PlayButton from './PlayButton';
 
 import { mainColor } from '../../theme';
@@ -15,12 +15,6 @@ const WaveForm = () => {
 
   const waveFormRef = useRef();
   const waveSurfer = useRef(null);
-
-  const handlePlay = () => {
-    setIsPlaying(!waveSurfer.current.isPlaying());
-    waveSurfer.current.playPause();
-    console.log(waveSurfer.current);
-  };
 
   useEffect(() => {
     if (waveFormRef.current) {
@@ -55,13 +49,18 @@ const WaveForm = () => {
     return () => waveSurfer.current.destroy();
   }, [selectedRecord]);
 
-  const toMMSS = seconds => {
+  const handlePlay = useCallback(() => {
+    setIsPlaying(!waveSurfer.current.isPlaying());
+    waveSurfer.current.playPause();
+  }, []);
+
+  const toMMSS = useCallback(seconds => {
     var min =
       parseInt((seconds % 3600) / 60) < 10 ? '0' + parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60);
     var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60;
 
     return min + ':' + sec;
-  };
+  }, []);
 
   return (
     <WaveformContainer>
