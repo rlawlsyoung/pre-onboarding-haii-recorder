@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { isMessageOnAtom } from '../atom';
 import { ref, uploadBytes } from 'firebase/storage';
@@ -31,14 +31,6 @@ const Record = ({ recOn, setRecOn }) => {
     if (audio) uploadAudio();
   }, [audio]);
 
-  const uploadAudio = () => {
-    if (audio == null) return;
-    const audioRef = ref(storage, `audio/${audio.name}`);
-    uploadBytes(audioRef, audio).then(() => {
-      setIsMessageOn(true);
-    });
-  };
-
   let today = new Date();
   let year = today.getFullYear();
   let month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -47,17 +39,25 @@ const Record = ({ recOn, setRecOn }) => {
   let minutes = ('0' + today.getMinutes()).slice(-2);
   let seconds = ('0' + today.getSeconds()).slice(-2);
 
-  const countHandler = () => {
-    countRef.current = setInterval(() => setCount(c => c + 1), 1000);
-  };
+  const uploadAudio = useCallback(() => {
+    if (audio == null) return;
+    const audioRef = ref(storage, `audio/${audio.name}`);
+    uploadBytes(audioRef, audio).then(() => {
+      setIsMessageOn(true);
+    });
+  }, [audio]);
 
-  const stopHandler = () => {
+  const countHandler = useCallback(() => {
+    countRef.current = setInterval(() => setCount(c => c + 1), 1000);
+  }, []);
+
+  const stopHandler = useCallback(() => {
     clearInterval(countRef.current);
     countRef.current = null;
     setCount(0);
-  };
+  }, []);
 
-  const toHHMMSS = hour => {
+  const toHHMMSS = useCallback(hour => {
     let myNum = parseInt(hour, 10);
     let hours = Math.floor(myNum / 3600);
     let minutes = Math.floor((myNum - hours * 3600) / 60);
@@ -72,9 +72,9 @@ const Record = ({ recOn, setRecOn }) => {
       seconds = '0' + seconds;
     }
     return hours + ':' + minutes + ':' + seconds;
-  };
+  }, []);
 
-  const startRecord = () => {
+  const startRecord = useCallback(() => {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const analyser = audioCtx.createScriptProcessor(0, 1, 1);
     setAnalyser(analyser);
@@ -112,9 +112,9 @@ const Record = ({ recOn, setRecOn }) => {
         }
       };
     });
-  };
+  }, [maxSeconds]);
 
-  const stopRecord = () => {
+  const stopRecord = useCallback(() => {
     media.ondataavailable = e => {
       setAudioUrl(e.data);
       setRecOn(true);
@@ -126,7 +126,7 @@ const Record = ({ recOn, setRecOn }) => {
     media.stop();
     analyser.disconnect();
     source.disconnect();
-  };
+  }, [media, stream, analyser, source]);
 
   const onSubmitAudioFile = useCallback(() => {
     const sound = new File([audioUrl], `${year}-${month}-${date} | ${hours}:${minutes}:${seconds}.mp3`, {

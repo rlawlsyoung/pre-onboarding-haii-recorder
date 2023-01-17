@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import styled from 'styled-components';
@@ -5,14 +6,14 @@ import styled from 'styled-components';
 const MaximumSeconds = ({ recOn, maxSeconds, setMaxSeconds }) => {
   let timer;
 
-  const handleSelect = e => {
+  const handleSelect = useCallback(e => {
     if (timer) {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
       setMaxSeconds(e.target.value);
     }, 30);
-  };
+  }, []);
 
   return (
     <MaximumSecondsBlock>

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaMicrophoneAlt } from 'react-icons/fa';
 import styled from 'styled-components';
@@ -7,9 +8,9 @@ import { mainColor } from '../../Theme';
 const ToRecordBtn = ({ recOn }) => {
   const navigate = useNavigate();
 
-  const goHome = () => {
+  const goHome = useCallback(() => {
     recOn && navigate('/record');
-  };
+  }, [recOn]);
 
   return (
     <Container recOn={recOn} onClick={goHome}>
